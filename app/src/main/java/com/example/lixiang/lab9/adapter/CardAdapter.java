@@ -49,7 +49,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     }
 
     public void onBindViewHolder(final ViewHolder view, int pos) {
-
         final Github github = (Github)this.items.get(pos);
         view.login.setText(github.getLogin());
         view.id.setText("id: " + github.getId());

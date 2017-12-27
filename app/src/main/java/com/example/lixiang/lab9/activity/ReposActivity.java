@@ -42,26 +42,26 @@ public class ReposActivity extends AppCompatActivity {
     }
 
     private void removeProgressBar() {
-        this.progressBar.setVisibility(View.GONE);
-        this.reposList.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+        reposList.setVisibility(View.VISIBLE);
     }
 
     private void getRepos() {
         ((GithubService) ServiceFactory.getmRetrofit("https://api.github.com").create(GithubService.class))
-                .getRepos(this.user).subscribeOn(Schedulers.newThread())
+                .getRepos(user).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<Repos>>() {
                     public void onCompleted() {
-                        ReposActivity.this.removeProgressBar();
+                        removeProgressBar();
                     }
 
                     public void onError(Throwable paramAnonymousThrowable) {
                         Toast.makeText(ReposActivity.this, paramAnonymousThrowable.hashCode() + "获取失败", Toast.LENGTH_SHORT).show();
-                        ReposActivity.this.removeProgressBar();
+                        removeProgressBar();
                     }
 
-                    public void onNext(List<Repos> paramAnonymousList) {
-                        ReposActivity.this.setAdapter(paramAnonymousList);
+                    public void onNext(List<Repos> list) {
+                        setAdapter(list);
                     }
         });
     }

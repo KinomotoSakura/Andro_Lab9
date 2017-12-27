@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         this.fetchButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String USER = MainActivity.this.editText.getText().toString();
-                MainActivity.this.showWait();
+                showWait();
                 ((GithubService) ServiceFactory.getmRetrofit("https://api.github.com").create(GithubService.class))
                         .getUser(USER)
                         .subscribeOn(Schedulers.newThread())
@@ -78,14 +78,14 @@ public class MainActivity extends AppCompatActivity {
                         .subscribe(new Subscriber<Github>() {
                             public final void onCompleted() {
                                 System.out.println("完成传输");
-                                MainActivity.this.removeWait();
+                                removeWait();
                             }
                             public void onError(Throwable e) {
                                 Toast.makeText(MainActivity.this, e.hashCode() + "请确认用户存在", Toast.LENGTH_SHORT).show();
-                                MainActivity.this.removeWait();
+                                removeWait();
                             }
                             public void onNext(Github github) {
-                                MainActivity.this.cardAdapter.addData(github);
+                                cardAdapter.addData(github);
                             }
                 });
             }
@@ -93,11 +93,11 @@ public class MainActivity extends AppCompatActivity {
         this.cardAdapter.setOnItemClickListener(new CardAdapter.OnItemClickListener() {
             public void onClick(int pos) {
                 Intent intent = new Intent(MainActivity.this, ReposActivity.class);
-                intent.putExtra("user", MainActivity.this.cardAdapter.getItem(pos).getLogin());
-                MainActivity.this.startActivity(intent);
+                intent.putExtra("user", cardAdapter.getItem(pos).getLogin());
+                startActivity(intent);
             }
             public void onLongClick(int pos) {
-                MainActivity.this.cardAdapter.removeItem(pos);
+                cardAdapter.removeItem(pos);
             }
         });
     }
